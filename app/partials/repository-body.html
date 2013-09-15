@@ -1,0 +1,27 @@
+<h3>{{name}}</h3>
+{{#if isRegistered}}
+<a href="#registerModal" role="button" class="btn btn-warning" data-toggle="modal">Register</a>
+{{else}}
+<button class="btn-success">Registered</button>
+{{/if}}
+<div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h3 id="myModalLabel">Register your Repository as a Demo</h3>
+</div>
+<div class="modal-body">
+  <p>{{view Ember.TextField valueBinding="name"}}</p>
+  <p>{{view Ember.TextArea placeholder="Description" valueBinding="description"}}</p>
+  <p>{{view Ember.TextField placeholder="Version" valueBinding="version"}}</p>
+  <p>{{view Ember.TextArea placeholder="Release Notes" valueBinding="releaseNotes"}}</p>
+</div>
+<div class="modal-footer">
+  <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  <button id="registrationButton" data-registered-text="Registered!" data-loading-text="Registering..." class="btn btn-primary" {{action 'register'}}>Register</button>
+</div>
+</div>
+<h2><small class='muted'>(Created {{date createdAt}})</small></h2>
+<hr>
+<div class='below-the-fold'>
+{{outlet}}
+</div>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css">
+    <script src="http://code.angularjs.org/1.2.0-rc.2/angular.min.js"></script>
+    <script src="http://code.angularjs.org/1.2.0-rc.2/angular-resource.js"></script>
+    <script>
+      angular.module('ex', ['ngResource']);
+      function ListCtrl($scope, $resource) {
+        $scope.employees = $resource('http://ec2-54-211-93-105.compute-1.amazonaws.com:6681/emps').query();
+      }
+
+    </script>
+  </head>
+
+  <body>
+    <div ng-app="ex">
+      <div ng-controller="ListCtrl">
+        <table>
+          <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="employee in employees">
+            <td>{{employee.FIRST_NAME}}</td>
+            <td>{{employee.LAST_NAME}}</td>
+          </tr>
+          </tbody>
+        </table>
+    
+      </div>
+    </div>
+  </body>
+
+</html>

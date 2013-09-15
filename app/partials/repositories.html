@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span5" style="height: 700px; overflow: auto">
+      <table class='table table-bordered table-hover' style="height: 750px; overflow: auto">
+        <thead>
+          <tr><th>Name</th><th>Description</th><th class="img">Published</th></tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="repository in repositories">
+              <td><a href="#/repositories/{{repository.name}}">{{repository.name}}</a></td>
+              <td>{{repository.description}}</td>
+              <td class="img">
+                <img src="img/icon-antena-blue-small.png" ng-show="published(repository)" ng-click="showDemo(repository)"/>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="span7" style="height: 750px; overflow: auto" ui-view>
+    </div>
+  </div>
+</div>
