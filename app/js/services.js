@@ -97,7 +97,7 @@ app.factory('DemoCorrelationService', [ '$rootScope', function($rootScope) {
 //   }
 // } ]);
 
-app.factory('AuthorizationService', [ '$http', '$rootScope','Restangular', '$state', 'ErrorService', function($http, $rootScope,Restangular, $state, ErrorService) {
+app.factory('AuthorizationService', [ '$resource', '$http', '$rootScope','Restangular', '$state', 'ErrorService', function($resource, $http, $rootScope,Restangular, $state, ErrorService) {
   var author = false;
   var userNotRegistered = function(username, response) {
     ErrorService.setError('Sorry, ' + username + ', but you are not registered yet!');
@@ -132,26 +132,6 @@ app.factory('AuthorizationService', [ '$http', '$rootScope','Restangular', '$sta
           client_id : 'WEBUI',
           scope : 'READ_SERVICES%20WRITE_SERVICES%20CONSUME_SERVICES%20APPLY_POLICIES%20READ_CONSUMERS%20WRITE_CONSUMERS%20CONTRACT_MGMT%20CONSUME_POLICIES'
         });
-        $.ajax({
-            type: 'POST',
-            url: 'https://registry.mulesoft.com:443/api/access-token',
-            data: {
-              grant_type : 'password',
-              username : user.srUser,
-              password : user.srPass,
-              client_id : 'WEBUI',
-              scope : 'READ_SERVICES%20WRITE_SERVICES%20CONSUME_SERVICES%20APPLY_POLICIES%20READ_CONSUMERS%20WRITE_CONSUMERS%20CONTRACT_MGMT%20CONSUME_POLICIES'
-            },
-            accepts: 'application/json',
-            contentType: 'application/x-www-form-urlencoded'
-          })
-        .done(function( asrToken ) {
-            proceedToSignIn(drToken, asrToken, user);
-          })
-        .fail(function(response) {
-            userNotRegistered(scope.username, response);
-          });
-        /*
         Restangular
           .oneUrl('', 'https://registry.mulesoft.com:443/api/access-token')
           .post('', asrTokenParams, {}, {
@@ -165,7 +145,6 @@ app.factory('AuthorizationService', [ '$http', '$rootScope','Restangular', '$sta
               userNotRegistered(scope.username, response);
             }
           );
-          */
       })
     };
   return {
@@ -189,48 +168,18 @@ app.factory('AuthorizationService', [ '$http', '$rootScope','Restangular', '$sta
         client_id : 'web-ui',
         scope : 'READ%20WRITE'
       });
-      /*Restangular
-        .oneUrl('', baseUrl + 'access-token')
-        .post('', drTokenParams, {}, {
-          'Content-Type : application/x-www-form-urlencoded',
-          'Accept : application/json'})
-        .then(
-          function(drToken) {
-            authorizeSuccess(drToken, scope, self);
-          },
-          authorizeFail
-        );*//*
-        
-        *//*
-        $http({
-          url: 'https://demo-repository-api.cloudhub.io/access-token', 
-          method: 'POST',
-          data: drTokenParams,
-          headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-        .success(function(data, status, headers, config) {
-            alert(data);
-        }).error(function(data, status, headers, config) {
-            alert(status);
-        });*/
-        $.ajax({
-            type: 'POST',
-            url: 'https://demo-repository-api.cloudhub.io/access-token',
-            data: {
-              grant_type : 'password',
-              username : scope.username,
-              password : scope.password,
-              client_id : 'web-ui',
-              scope : 'READ%20WRITE'
+        Restangular
+          .oneUrl('', baseUrl + 'access-token')
+          .post('', drTokenParams, {}, {
+            'Content-Type' : 'application/x-www-form-urlencoded;utf-8',
+            'Accept' : 'application/json'}
+            )
+          .then(
+            function(drToken) {
+              authorizeSuccess(drToken, scope, self);
             },
-            accepts: 'application/json',
-            contentType: 'application/x-www-form-urlencoded'
-          })
-        .done(function( drToken ) {
-            authorizeSuccess(drToken, scope, self);
-        });
+            authorizeFail
+          );
     },
     logout : function() {
       sessionStorage.removeItem('token.dr');
