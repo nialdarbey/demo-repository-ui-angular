@@ -6,11 +6,11 @@
           <tr><th>Name</th><th>Description</th><th class="img">Published</th></tr>
         </thead>
         <tbody>
-            <tr ng-repeat="repository in repositories">
+            <tr ng-repeat="repository in repositories" ng-class="{ selected : isSelected(repository) }" >
               <td><a href="#/repositories/{{repository.name}}">{{repository.name}}</a></td>
               <td>{{repository.description}}</td>
               <td class="img">
-                <img src="img/icon-antena-blue-small.png" ng-show="published(repository)" ng-click="showDemo(repository)"/>
+                <img class="link" src="img/check-blue.png" ng-show="published(repository)" ng-click="showDemo(repository)" popover-placement="right" popover="See published Demo" popover-trigger="mouseenter"/>
               </td>
             </tr>
         </tbody>

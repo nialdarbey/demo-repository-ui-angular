@@ -3,19 +3,24 @@
         <div class="row-fluid">
             <div class="span9">
                 <div class="row-fluid">
-                    <h3>{{demo.name}}</h3>
+                    <h3 class="demoName" editable-text="demo.name">{{demo.name}}</h3>
                 </div>
                 <div class="row-fluid">
                     <div class="span9">
+                        <div id="tags" style="height: 6em; overflow: auto;">
+                    <ul id="tagsEditableTags" ng-repeat="tax in demo.taxonomies">
+                        <li class="tagit-choice-editable" popover-placement="left" popover="Filter by {{tax.id}}" popover-trigger="mouseenter" ui-sref="demos.demo({ verticals: tax.id})" ng-hide="$state.params.tags"><span class="tagit-label">{{taxonomyLabel(tax)}}</span></li>
+                    </ul>
+                </div>
                         <p class='muted'>(Developed by {{author}})</p>
                     </div>
                     <div class="span3">
                         <div class="btn-group">
-                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-                                {{version}} <span class="caret"></span>
+                            <button class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#" ng-cloak>
+                                Version {{version.major}}.{{version.minor}}.{{version.revision}} <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li ng-repeat="version in versions" ng-class="{ active: $index == 0 }"><a tabindex="-1" href="#" ng-click="chooseVersion(version)">Version {{version}}</a></li>
+                                <li ng-repeat="version in versions" ng-class="{ active: $index == 0 }"><a ng-click="chooseVersion(version)">Version {{version}}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -33,22 +38,22 @@
     <div class="span3 pull-right">
         <div class="row-fluid">
             <div class="span6">
-                <h2>
+                <h3>
                     <small class='muted'>Verticals</small>
-                </h2>
-                <div style="height: 6em; overflow: auto;">
-                    <div ng-repeat="tax in demo.taxonomies">
-                        <a href="">{{taxonomyLabel(tax)}}</a>
-                    </div>
+                </h3>
+                <div id="tags" style="height: 6em; overflow: auto;">
+                    <ul id="tagsEditableTags" ng-repeat="tax in demo.taxonomies">
+                        <li class="tagit-choice-editable" popover-placement="left" popover="Filter by {{tax.id}}" popover-trigger="mouseenter" ui-sref="demos.demo({ verticals: tax.id})" ng-hide="$state.params.tags"><span class="tagit-label">{{taxonomyLabel(tax)}}</span></li>
+                    </ul>
                 </div>
             </div>
             <div class="span6">
-                <h2>
+                <h3>
                     <small class='muted'>Tags</small>
-                </h2>
+                </h3>
                 <div style="height: 6em; overflow: auto;">
                     <div ng-repeat="tag in demo.tags">
-                        <a href="">{{tag}}</a>
+                        <a popover-placement="left" popover="Filter by {{tag}}" popover-trigger="mouseenter" ui-sref="demos.demo({ tags: tag })" ng-hide="$state.params.verticals">{{tag}}</a>
                     </div>
                 </div>
             </div>
@@ -61,12 +66,12 @@
         <div class="tabbable">
             <!-- Only required for left/right tabs -->
             <ul class="nav nav-tabs">
-                <li><a href="#tab-info" data-toggle="tab">Info</a></li>
-                <li class="active"><a href="#tab-configs" data-toggle="tab">Configs</a></li>
+                <li class="active"><a href="#tab-info" data-toggle="tab">Info</a></li>
+                <li><a href="#tab-configs" data-toggle="tab">Configs</a></li>
                 <li><a href="#tab-links" data-toggle="tab">Links</a></li>
             </ul>
             <div class="tab-content">
-                <div class="tab-pane" id="tab-info">
+                <div class="tab-pane active" id="tab-info">
                     <div class="container-fluid">
                         <div class="accordion" id="accordion2">
                             <div class="accordion-group">
@@ -84,23 +89,20 @@
                                     <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"> Release Notes </a>
                                 </div>
                                 <div id="collapseTwo" class="accordion-body collapse">
-                                    <div class="accordion-inner">{{demo.releaseNotes}}</div>
+                                    <div class="accordion-inner">
+                                        <div showdown="version.releaseNotes"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane active" id="tab-configs">
+                <div class="tab-pane" id="tab-configs">
                     <div class="tabbable tabs-right">
                         <ul class="nav nav-tabs">
                             <li ng-repeat="(name,xml) in configs.configs" ng-class="{active: $index == 0}">
-                                <a href="#tab-config" data-toggle="tab" ng-click="chooseConfig(name)" popover-placement="left" popover="{{name}}" popover-trigger="mouseenter">Config {{$index + 1}}</a>
+                                <a href="#tab-config" data-toggle="tab" ng-click="chooseConfig(name)" popover-placement="left" popover="{{name + '.xml'}}" popover-trigger="mouseenter">{{truncatedConfigName(name)}}</a>
                             </li>
-                            <!-- <li class="active">
-                                <a href="#tab-config-all" data-toggle="tab">All</a>
-                            </li>
-                            <li><a href="#tab-config-1" data-toggle="tab">Config 1</a></li>
-                            <li><a href="#tab-config-2" data-toggle="tab">Config 2</a></li>-->
                         </ul>
                         <div class="tab-content">
                             <div class="tab-pane active" id="tab-config" style="height: 400px; overflow: scroll;">
@@ -116,9 +118,10 @@
                 <div class="tab-pane" id="tab-links">
                     <dl class="dl-horizontal">
                         <dt>Github</dt>
-                        <dd>{{linkFor('github')}}</dd>
+                        <dd>{{links.github}}</dd>
                         <dt>Amazon</dt>
-                        <dd>{{linkFor('amazon')}}</dd>
+                        <dd ng-show="amazonAMIAssigned(links.amazon)">{{links.amazon}}</dd>
+                        <dd ng-hide="amazonAMIAssigned(links.amazon)"><button class="btn btn-primary">Start Amazon</button></dd>
                     </dl>
                 </div>
             </div>

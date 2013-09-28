@@ -1,10 +1,154 @@
 /* Put your CSS here */
+@font-face {
+    font-family: 'Ubuntu';
+    src: url('../fonts/ubuntu-r-webfont-webfont.eot');
+    src: url('../fonts/ubuntu-r-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ubuntu-r-webfont.woff') format('woff'),
+         url('../fonts/ubuntu-r-webfont.ttf') format('truetype'),
+         url('../fonts/ubuntu-r-webfont.svg#ubuntu') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+#tags span {
+  padding: 0px 5px 0px 5px;
+  background: #2a7ebb;
+}
+
+#tags span, ul#tagsEditableTags span.tagit-label {
+
+margin-bottom: 10px;
+margin-left: 10px;
+margin-right: 5px;
+padding: 0 5px 0 10px;
+font-weight: 400;
+background: #2a7ebb;
+color: #fff;
+font-family: 'Helvetica Neue';
+font-weight: 500;
+text-transform: uppercase;
+text-decoration: none;
+-moz-border-radius-bottomright: 2px;
+-webkit-border-bottom-right-radius: 2px;
+border-bottom-right-radius: 2px;
+-moz-border-radius-topright: 2px;
+-webkit-border-top-right-radius: 2px;
+border-top-right-radius: 2px;
+}
+
+#tags li, #tags span, ul#tagsEditableTags li.tagit-choice-editable, ul#tagsEditableTags span.tagit-label {
+float: left;
+height: 16px;
+line-height: 16px;
+position: relative;
+font-size: 10px;
+margin-bottom: 5px;
+padding: 0;
+margin-top: 0;
+margin-right: 0;
+margin-left: 0;
+background: transparent;
+border: 0;
+}
+
+#tags span:before, ul#tagsEditableTags span.tagit-label:before {
+content: "";
+position: absolute;
+top: 6px;
+left: 0;
+float: left;
+width: 4px;
+height: 4px;
+-moz-border-radius: 2px;
+-webkit-border-radius: 2px;
+border-radius: 2px;
+background: #fff;
+}
+
+#tags span:after, ul#tagsEditableTags span.tagit-label:after {
+content: "";
+float: left;
+position: absolute;
+top: 0;
+left: -9px;
+width: 0;
+height: 0;
+border-color: transparent #2a7ebb transparent transparent;
+border-style: solid;
+border-width: 8px 9px 8px 0;
+}
+
+tr.selected {
+  background-color: #F5E4C6;
+}
+
+img.link {
+  cursor:pointer;
+}
+
+button#searchButton:disabled {
+  background-color: gray;
+  background-image: none;
+}
+
+button#publicationButton:disabled {
+  background-color: gray;
+  background-image: none;
+}
+
+input.typeahead {
+  margin-bottom: 3px;
+}
+
+h2 {
+  font-family: ubuntu;
+  font-weight: normal;
+  font-size: 24px;
+}
+
+
 html, body {
-    margin: 20px;
+    margin: 0px 20px;
+    color: #3d3d3d;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+li.welcome {
+  padding-top: 10px;
+  color: #3d3d3d;
+}
+
+div#banner {
+  background: url('../img/top.jpg') repeat-x;
+  height: 97px;
+  margin: 0px 0px 5px 0px;
+}
+
+div.header_search {
+  width: 290px;
+  margin-top: 34px;
+}
+
+div.header_search input {
+  width: 170px;
+  display: inline-block;
+}
+
+div.header_search form {
+  display: inline-block;
 }
 
 a {
   cursor: pointer;
+  color: #08C;
+}
+
+.demoName {
+  font-family: ubuntu;
+  font-weight: normal;
 }
 th.img, td.img {
   width: 5em;
@@ -40,7 +184,13 @@ table tbody tr.highlight {
 
 
 h1.main {
-    text-align: center;
+    display: block;
+    background: url('../img/logo-repository.png') no-repeat;
+    width: 553px;
+    height: 74px;
+    float: left;
+    margin: 10px 0px 0px 10px;
+    text-indent: -9999px;
 }
 
 div.below-the-fold h1 {

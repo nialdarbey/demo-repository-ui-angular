@@ -1,4 +1,4 @@
-<h3>{{repository.name}}</h3>
+<h2>{{repository.name}}</h2>
 <a href="#registerModal" role="button" x-ng-hide="published()" class="btn btn-primary" data-toggle="modal">Publish</a>
 <button x-ng-show="published()" class="btn-success">Published</button>
 <div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -35,17 +35,17 @@
         </div>
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-            <button id="publicationButton" data-registered-text="Published!" data-loading-text="Publishing..." class="btn-primary" value="Publish" ng-hide="published()" ng-click="publish(demo)" ng-disabled="form.$invalid || isUnchanged(demo)">Publish</button>
+            <button id="publicationButton" data-registered-text="Published!" data-loading-text="Publishing..." class="btn-primary" value="Publish" ng-hide="published()" ng-click="publish(demo)" ng-disabled="form.$invalid || isUnchanged(demo) || isPublishing()">Publish</button>
             <button x-ng-show="published()" class="btn-success" disabled>Published</button>
             <button ng-click="reset()" ng-disabled="isUnchanged(demo)">Reset</button>
         </div>
     </form>
     
 </div>
-<h2>
+<h3>
     <small class='muted'>(Created <span x-moment="repository.createdAt"></span>)
     </small>
-</h2>
+</h3>
 <hr>
 <div class='below-the-fold'>
     <div x-showdown="readMe"></div>

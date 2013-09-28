@@ -1,18 +1,25 @@
 <div class="container-fluid">
 	<div class="row-fluid">
-		<div class="span6">
-			<div id="tag-info" class="input-append">
-			  <input type="text">
-			  <button class="btn" type="button">Add <i class="icon-plus"></i></button>
+		<h2>Advanced Search</h2>
+		<div class="row-fluid">
+			<div class="span5">
+				<h4>Vertical</h4>
+				<select class="open" ng-options="v as v.id for v in verticals" 
+					ng-model="vertical" ng-cloak ng-focus="focusVertical()">
+            	</select>
 			</div>
-			<ul id="tag-cloud"></ul>
-		</div>
-		<div class="span6">
-			<div id="tag-info" class="input-append">
-			  <input type="text">
-			  <button class="btn" type="button">Add <i class="icon-plus"></i></button>
+			<div class="span2">
+				<h4>&nbsp;</h4>
+				<button id="searchButton" ng-class="{ disabled : searchButtonDisabled() }" class="btn btn-primary" ng-click="search()">Search</button>
 			</div>
-			<ul id="tag-cloud"></ul>
+			<div class="span5">
+				<h4>Tags & Free Text</h4>
+				<div id="tag-info" class="input-append">
+				  <typeahead ng-focus="focusTag()" choice="tag" list="tags" placeholder="http, xml, etc."></typeahead>
+				  <button class="btn" type="button">Add <i class="icon-plus"></i></button>
+				</div>
+				<ul id="tag-cloud"></ul>
+			</div>
 		</div>
 	</div>
 </div>

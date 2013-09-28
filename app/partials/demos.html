@@ -1,25 +1,20 @@
 <div class="container-fluid">
     <div class="row-fluid">
         <div class="span5" style="height: 750px; overflow: auto">
-            <dl class="dl-horizontal" style="margin: opx">
-                <dt>Quick Search</dt>
-                <dd>
-                    <form class="form-inline" ng-submit="search()">
-                        <typeahead choice="selection" class="span10" list="tags" placeholder="by tag, etc."></typeahead>
-                    </form>
-                </dd>
-            </dl>
             <div class="row-fluid">
                 <div class="span12">
                     <table class='table table-bordered table-hover'>
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Summary</th>
+                                <th>
+                                    <span>Summary<span>
+                                    <img ng-click="filterOff()" ng-show="$state.params.verticals || $state.params.tags" class="pull-right link" src="img/filter-icon.png" popover-placement="top" popover="{{'Filtered by ' + ($state.params.verticals || $state.params.tags)}}" popover-trigger="mouseenter"/>
+                                </th>
                             </tr>
                         </thead>
                         <tbody style="height: 700px; overflow: auto">
-                            <tr ng-repeat="demo in demos">
+                            <tr ng-class="{ selected : isSelected(demo) }" ng-repeat="demo in demos | orderBy:'id'">
                                 <td><a href="#/demos/{{demo.id}}">{{demo.name}}</a></td>
                                 <td>{{demo.summary}}</td>
                             </tr>
