@@ -28,26 +28,26 @@
     <div class="navbar">
         <div class="navbar-inner">
             <ul class="nav" ng-cloak>
-                <li ng-show="signedIn()" ng-class="{ active: $state.includes('demos') }">
+                <li ng-show="signedIn()" ng-class="{ active: isActive('demos') }">
                     <a ui-sref="demos.index">Demos</a>
                 </li>
-                <li ng-show="signedIn() && isAuthor()" ng-class="{ active: $state.includes('repositories') }">
+                <li ng-show="signedIn() && isAuthor()" ng-class="{ active: isActive('repositories') }">
                     <a ui-sref="repositories.index">My Repositories</a>
                 </li>
-                <li ng-show="signedIn()" ng-class="{ active: $state.includes('snippets') }">
+                <li ng-show="signedIn()" ng-class="{ active: isActive('snippets') }">
                     <a ui-sref="snippets">Snippets</a>
                 </li>
-                <li ng-show="signedIn() && isAuthor()" ng-class="{ active: $state.includes('gists') }">
+                <li ng-show="signedIn() && isAuthor()" ng-class="{ active: isActive('gists') }">
                     <a ui-sref="gists">My Gists</a>
                 </li>
-                <li ng-class="{ active: $state.includes('home') }">
+                <li ng-class="{ active: isActive('home') }">
                     <a ui-sref="home">Home</a>
                 </li>
                 
             </ul>
             <ul class="nav pull-right" ng-cloak>
                 <li class="welcome" ng-show="signedIn()" ng-cloak>{{welcome()}}</li>
-                <li class="pull-right" ng-hide="signedIn()" ng-class="{ active: $state.includes('login') }">
+                <li class="pull-right" ng-hide="signedIn()" ng-class="{ active: isActive('login') }">
                     <a ui-sref="login">Sign In</a>
                 </li>
                 <li class="pull-right" ng-show="signedIn()">
@@ -61,18 +61,18 @@
 
     <script src="lib/jquery-1.9.1.js"></script>
     <script src="lib/underscore-1.5.1.js"></script>
-    <script src="lib/angular-1.0.8.js"></script>
+    <script src="lib/angular-v1.2.0-rc.2.js"></script>
     <script src="lib/angular/angular-resource.js"></script>
     <script src="lib/angular-bootstrap-0.6.0.js"></script>
     <script src="lib/restangular.js"></script>
+    <script src="lib/angular-strap-0.7.5.js"></script>
+    <script src="lib/angular-xeditable-0.1.4/js/xeditable.js"></script>
     <script src="lib/showdown.js"></script>
     <script src="lib/moment.js"></script>
     <script src="lib/ui-router.js"></script>
     <script src="lib/bootstrap.js"></script>
     <script src="lib/high/highlight.pack.js"></script>
     <script src="lib/bootstrap-tag-cloud.js"></script>
-    <script src="lib/angular-strap-0.7.5.js"></script>
-    <script src="lib/angular-xeditable-0.1.4/js/xeditable.js"></script>
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
     <script src="js/directives.js"></script>

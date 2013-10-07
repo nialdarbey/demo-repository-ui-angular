@@ -111,7 +111,12 @@ function DemosCtrl($location, $scope, AuthorizationService, Restangular, $state,
     $scope.isSelected = function(demo) {
         return $location.path().indexOf(demo.id) != -1;
     }
-
+    $scope.isFiltered = function() {
+        return $state.params.verticals || $state.params.tags;
+    }
+    $scope.filter = function() {
+        return ($state.params.verticals || $state.params.tags);
+    }
     AuthorizationService.init();
     if ($state.params.tags) {
         $scope.demos = Restangular

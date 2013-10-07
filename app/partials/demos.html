@@ -9,7 +9,7 @@
                                 <th>Name</th>
                                 <th>
                                     <span>Summary<span>
-                                    <img ng-click="filterOff()" ng-show="$state.params.verticals || $state.params.tags" class="pull-right link" src="img/filter-icon.png" popover-placement="top" popover="{{'Filtered by ' + ($state.params.verticals || $state.params.tags)}}" popover-trigger="mouseenter"/>
+                                    <img ng-click="filterOff()" ng-show="isFiltered()" class="pull-right link" src="img/filter-icon.png" popover-placement="top" popover="{{'Filtered by ' + filter()}}" popover-trigger="mouseenter"/>
                                 </th>
                             </tr>
                         </thead>

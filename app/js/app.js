@@ -30,9 +30,9 @@ app.config([ '$stateProvider', '$routeProvider', '$urlRouterProvider', 'Restangu
         }
     });
 
-    $urlRouterProvider
-        .when('', '/home')
-        .otherwise('/home');
+    // $urlRouterProvider
+        // .when('', '/home')
+        // .otherwise('/home');
 
     $stateProvider
         .state('repositories', {
@@ -127,8 +127,8 @@ app.controller('MainCtrl', [ 'Restangular' , '$state', '$scope', 'ErrorService',
         author = true; // just the default
         $state.go('login');
     };
-    $scope.inDemos = function() {
-        return $state.includes('demos');
+    $scope.isActive = function(state) {
+        return $state.includes(state);
     };
     $scope.welcome = function() {
         if (AuthorizationService.getUser()) {
