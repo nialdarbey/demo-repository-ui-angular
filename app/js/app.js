@@ -30,9 +30,8 @@ app.config([ '$stateProvider', '$routeProvider', '$urlRouterProvider', 'Restangu
         }
     });
 
-    // $urlRouterProvider
-        // .when('', '/home')
-        // .otherwise('/home');
+    $urlRouterProvider
+         .when('', '/home');
 
     $stateProvider
         .state('repositories', {
