@@ -5,7 +5,6 @@
 var app = angular.module('demo-repository', [ 'xeditable', 'ui.router.compat', 'ui.bootstrap', 'restangular', 'ngResource' ]);
 
 var baseUrl = "https://demo-repository-api.cloudhub.io/";
-// var baseUrl = "https://localhost:9999/";
 
 app.config([ '$stateProvider', '$routeProvider', '$urlRouterProvider', 'RestangularProvider', '$httpProvider', '$provide', function($stateProvider, $routeProvider, $urlRouterProvider, RestangularProvider, $httpProvider, $provide) {
 

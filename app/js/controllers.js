@@ -38,9 +38,9 @@ function RepositoryCtrl($scope, $stateParams, Restangular, AuthorizationService,
     $scope.repository = Restangular.one('repositories', $stateParams.repository).get({
         owner : AuthorizationService.getUser().githubUsername
     });
-    $scope.readMe = Restangular.one('repositories', $stateParams.repository).one('read-me').get({
-        owner : AuthorizationService.getUser().githubUsername
-    });
+    // $scope.readMe = Restangular.one('repositories', $stateParams.repository).one('read-me').get({
+    //     owner : AuthorizationService.getUser().githubUsername
+    // });
     $scope.master = { name: $stateParams.repository, major: 3, minor: 4, revision: 0, verticals: [] };
     $scope.availableVerticals = Restangular.all('taxonomies').getList({ q: '.*', limit: 10000});
     $scope.demo = angular.copy($scope.master);
@@ -53,33 +53,31 @@ function RepositoryCtrl($scope, $stateParams, Restangular, AuthorizationService,
         $scope.repository.then(function(repository) {
             var summary = repository.description.replace(/\n/g, '\\n').substring(0, 96);
             summary = (summary === '') ? 'x' : summary;
-            $scope.readMe.then(function(readMe) {
-                var verticals = [];
-                for (var i = 0; i < demo.verticals.length; i++) {
-                    verticals.push({
-                        taxonomy: demo.verticals[i].taxonomy,
-                        path: demo.verticals[i].path,
-                        id: demo.verticals[i].id
-                    });
-                }
-                var newDemo = {
-                        name : demo.name.replace(/[^A-Za-z 0-9]/g, '-'),
-                        repository : $stateParams.repository,
-                        description : readMe.replace(/\n/g, '\\n').substring(0, 2048),
-                        summary : summary,
-                        githubOwner : AuthorizationService.getUser().githubUsername,
-                        releaseNotes : readMe.replace(/\n/g, '\\n').substring(0, 8192),
-                        githubLink : repository.cloneUrl,
-                        amazonLink : demo.amazonLink || 'http://localhost:8080/not/filled/' + $stateParams.repository,
-                        version : demo.major + '.' + demo.minor + '.' + demo.revision,
-                        author : AuthorizationService.getUser().username,
-                        verticals: verticals
-                };
-                Restangular.all('demos').post(newDemo).then(function(response) {
-                    DemoCorrelationService.store($stateParams.repository, response.location);
-                }, function(response) {
-                    ErrorService.setError(response.data);
+            var verticals = [];
+            for (var i = 0; i < demo.verticals.length; i++) {
+                verticals.push({
+                    taxonomy: demo.verticals[i].taxonomy,
+                    path: demo.verticals[i].path,
+                    id: demo.verticals[i].id
                 });
+            }
+            var newDemo = {
+                    name : demo.name.replace(/[^A-Za-z 0-9]/g, '-'),
+                    repository : $stateParams.repository,
+                    description : repository.readMe.replace(/\n/g, '\\n').substring(0, 2048),
+                    summary : summary,
+                    githubOwner : AuthorizationService.getUser().githubUsername,
+                    releaseNotes : repository.readMe.replace(/\n/g, '\\n').substring(0, 8192),
+                    githubLink : repository.cloneUrl,
+                    amazonLink : demo.amazonLink || 'http://localhost:8080/not/filled/' + $stateParams.repository,
+                    version : demo.major + '.' + demo.minor + '.' + demo.revision,
+                    author : AuthorizationService.getUser().username,
+                    verticals: verticals
+            };
+            Restangular.all('demos').post(newDemo).then(function(response) {
+                DemoCorrelationService.store($stateParams.repository, response.location);
+            }, function(response) {
+                ErrorService.setError(response.data);
             });
         });
     };

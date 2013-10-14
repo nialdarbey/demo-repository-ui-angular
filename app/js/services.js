@@ -39,9 +39,13 @@ app.factory('ErrorService', function() {
 
 app.factory('DemoCorrelationService', [ '$rootScope', function($rootScope) {
   return {
-    getData: function() {
-    },
     store : function(githubName, asrName) {
+      if ($rootScope.demosMap) {
+        // skip
+      } else {
+        $rootScope.repositoriesMap = JSON.parse(sessionStorage.repositoriesMap);
+        $rootScope.demosMap = JSON.parse(sessionStorage.demosMap);
+      }
       $rootScope.repositoriesMap[githubName] = asrName;
       $rootScope.demosMap[asrName] = githubName;
     },
