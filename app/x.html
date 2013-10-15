@@ -1,0 +1,36 @@
+<form name="form" class="css-form" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+        <h3 id="myModalLabel">Publish your Repository as a Demo</h3>
+    </div>
+    <div class="modal-body">
+        <p>
+            <span>Name</span><input name="name" type="text" valueBinding="name" ng-model="demo.name" required /> <span class="error" ng-show="form.name.$error.required">Required!</span>
+        </p>
+        <p>
+            <span>Version</span>
+            <input name="major" style="width: 2em; display:inline;" type="number" min="3" max="9" placeholder="Major" ng-model="demo.major" required /> 
+            <span class="error" ng-show="form.major.$error.required">Required!</span> 
+            <span class="error" ng-show="form.major.$error.min">Min major is 3!</span> 
+            <input name="minor" style="width: 2em; display:inline;"  type="number" placeholder="Minor" ng-model="demo.minor" required /> 
+            <span class="error" ng-show="form.minor.$error.required">Required!</span> 
+            <span class="error" ng-show="form.major.$error.min">Min minor is 0!</span> 
+            <input name="revision" min="0" style="width: 2em; display:inline;" type="number" placeholder="Revision" ng-model="demo.revision" required /> 
+            <span class="error" ng-show="form.revision.$error.required">Required!</span>
+            <span class="error" ng-show="form.major.$error.min">Min revision is 0!</span> 
+        </p>
+        <span popover-placement="right" popover="Choose one or more Verticals. We'll also tag it with the technologies in use!" popover-trigger="mouseenter">Verticals</span> 
+        <select multiple ng-multiple="true" ng-options="v as v.id for v in availableVerticals" ng-model="demo.verticals" required>
+        </select>
+        <p>
+            <input type="url" name="url" placeholder="Amazon URI" ng-model="demo.amazonLink" />
+            <span class="error" ng-show="form.url.$error.url">Not a valid url</span> 
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button id="publicationButton" data-registered-text="Published!" data-loading-text="Publishing..." class="btn-primary" value="Publish" ng-hide="published()" ng-click="publish(demo)" ng-disabled="form.$invalid || isUnchanged(demo) || isPublishing()">Publish</button>
+        <button x-ng-show="published()" class="btn-success" disabled>Published</button>
+        <button ng-click="reset()" ng-disabled="isUnchanged(demo)">Reset</button>
+    </div>
+</form>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" ng-app="demo-repository">
+<head>
+<meta charset="utf-8">
+<title>Mule Demo Repository</title>
+<link rel="stylesheet" href="css/normalize.css">
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="lib/high/styles/github.css">
+<link rel="stylesheet" href="css/bootstrap-tag-cloud.css">
+<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+<link href="lib/angular-xeditable-0.1.4/css/xeditable.css" rel="stylesheet">
+</head>
+<body ng-controller="MainCtrl">
+    <div id="banner" class="row-fluid">
+        <h1 class="main">MuleSoft Demo Repository</h1>
+        <div ng-hide="signedIn()" class="header_search pull-right" ng-cloak>
+            <button popover-placement="left" popover="{{searchCriteria.target.description}}" popover-trigger="mouseenter" class="btn" ng-click="toggleSearchTarget()">{{searchCriteria.target.label}}</button>
+            <form ng-submit="search()">
+                <input class="typeahead" type="text" placeholder="{{searchCriteria.target.hint}}" bs-typeahead="{{searchCriteria.target.suggestions}}" ng-model="searchCriteria.text"/>
+            </form>
+            <a class="btn btn-primary ng-scope" ui-sref="demos.search" popover-placement="bottom" popover="Advanced Search Form" popover-trigger="mouseenter" href="#/demos/search">
+                    <i class="icon-search icon-white"></i>
+                </a>
+        </div>
+    </div>
+    <div alert-bar x-alertmessage="errorService.errorMessage"></div>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <ul class="nav" ng-cloak>
+                <li ng-show="signedIn()" ng-class="{ active: isActive('demos') }">
+                    <a ui-sref="demos.index">Demos</a>
+                </li>
+                <li ng-show="signedIn() && isAuthor()" ng-class="{ active: isActive('repositories') }">
+                    <a ui-sref="repositories.index">My Repositories</a>
+                </li>
+                <li ng-show="signedIn()" ng-class="{ active: isActive('snippets') }">
+                    <a ui-sref="snippets">Snippets</a>
+                </li>
+                <li ng-show="signedIn() && isAuthor()" ng-class="{ active: isActive('gists') }">
+                    <a ui-sref="gists">My Gists</a>
+                </li>
+                <li ng-class="{ active: isActive('home') }">
+                    <a ui-sref="home">Home</a>
+                </li>
+                
+            </ul>
+            <ul class="nav pull-right" ng-cloak>
+                <li class="welcome" ng-show="signedIn()" ng-cloak>{{welcome()}}</li>
+                <li class="pull-right" ng-hide="signedIn()" ng-class="{ active: isActive('login') }">
+                    <a ui-sref="login">Sign In</a>
+                </li>
+                <li class="pull-right" ng-show="signedIn()">
+                    <a ng-click="logout()">Sign Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    </div>
+    
+
+
+
+    <div>
+
+<h2>{{repository.name}}</h2>
+<a href="#registerModal" role="button" x-ng-hide="published()" class="btn btn-primary" data-toggle="modal">Publish</a>
+<button x-ng-show="published()" class="btn-success">Published</button>
+<div id="registerModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- <form name="newDemo" class="css-form" novalidate ng-submit="publish()"> -->
+    <form name="form" class="css-form" novalidate>
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+            <h3 id="myModalLabel">Publish your Repository as a Demo</h3>
+        </div>
+        <div class="modal-body">
+            <p>
+                <span>Name</span><input name="name" type="text" valueBinding="name" ng-model="demo.name" required /> <span class="error" ng-show="form.name.$error.required">Required!</span>
+            </p>
+            <p>
+                <span>Version</span>
+                <input name="major" style="width: 2em; display:inline;" type="number" min="3" max="9" placeholder="Major" ng-model="demo.major" required /> 
+                <span class="error" ng-show="form.major.$error.required">Required!</span> 
+                <span class="error" ng-show="form.major.$error.min">Min major is 3!</span> 
+                <input name="minor" style="width: 2em; display:inline;"  type="number" placeholder="Minor" ng-model="demo.minor" required /> 
+                <span class="error" ng-show="form.minor.$error.required">Required!</span> 
+                <span class="error" ng-show="form.major.$error.min">Min minor is 0!</span> 
+                <input name="revision" min="0" style="width: 2em; display:inline;" type="number" placeholder="Revision" ng-model="demo.revision" required /> 
+                <span class="error" ng-show="form.revision.$error.required">Required!</span>
+                <span class="error" ng-show="form.major.$error.min">Min revision is 0!</span> 
+                
+            </p>
+            <span popover-placement="right" popover="Choose one or more Verticals. We'll also tag it with the technologies in use!" popover-trigger="mouseenter">Verticals</span> 
+            <select multiple ng-multiple="true" ng-options="v as v.id for v in availableVerticals" ng-model="demo.verticals" required>
+            </select>
+            <p>
+                <input type="url" name="url" placeholder="Amazon URI" ng-model="demo.amazonLink" />
+                <span class="error" ng-show="form.url.$error.url">Not a valid url</span> 
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button id="publicationButton" data-registered-text="Published!" data-loading-text="Publishing..." class="btn-primary" value="Publish" ng-hide="published()" ng-click="publish(demo)" ng-disabled="form.$invalid || isUnchanged(demo) || isPublishing()">Publish</button>
+            <button x-ng-show="published()" class="btn-success" disabled>Published</button>
+            <button ng-click="reset()" ng-disabled="isUnchanged(demo)">Reset</button>
+        </div>
+    </form>
+    
+</div>
+<h3>
+    <small class='muted'>(Created <span x-moment="repository.createdAt"></span>)
+    </small>
+</h3>
+<hr>
+<div class='below-the-fold'>
+    <div x-showdown="readMe"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    <script src="lib/jquery-1.9.1.js"></script>
+    <script src="lib/underscore-1.5.1.js"></script>
+    <script src="lib/angular-v1.2.0-rc.2.js"></script>
+    <script src="lib/angular/angular-resource.js"></script>
+    <script src="lib/angular-bootstrap-0.6.0.js"></script>
+    <script src="lib/restangular.js"></script>
+    <script src="lib/angular-strap-0.7.5.js"></script>
+    <script src="lib/angular-xeditable-0.1.4/js/xeditable.js"></script>
+    <script src="lib/showdown.js"></script>
+    <script src="lib/moment.js"></script>
+    <script src="lib/ui-router.js"></script>
+    <script src="lib/bootstrap.js"></script>
+    <script src="lib/high/highlight.pack.js"></script>
+    <script src="lib/bootstrap-tag-cloud.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/controllers.js"></script>
+
+
+    
+</body>
+</html>

@@ -120,8 +120,7 @@ function DemosCtrl($location, $scope, AuthorizationService, Restangular, $state,
         $scope.demos = Restangular
             .one('demos')
             .get({ q : $state.params.tags, limit : 0})
-            .get('demos')
-            .get('services');
+            .get('demos');
     } else if ($state.params.verticals) {
         $scope.demos = Restangular
             .one('taxonomies')
@@ -133,8 +132,7 @@ function DemosCtrl($location, $scope, AuthorizationService, Restangular, $state,
         $scope.demos = Restangular
             .one('demos')
             .get()
-            .get('demos')
-            .get('services');
+            .get('demos');
     }
 }
 
